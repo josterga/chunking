@@ -16,6 +16,7 @@ class ChunkingEmbedder:
         inject_headers: bool = True,
         header_regex: str = r"^(#{1,6})\s+(.+?)\s*$",
         tokenizer=None,
+        model_name: str = "text-embedding-3-small",
         custom_chunk_fn=None,
     ):
         self.chunk_method = chunk_method
@@ -24,8 +25,9 @@ class ChunkingEmbedder:
         self.inject_headers = inject_headers
         self.header_re = re.compile(header_regex, re.M)
         self.custom_chunk_fn = custom_chunk_fn
-        self.tokenizer = tokenizer if tokenizer else get_default_tokenizer()
-
+        self.model_name = model_name
+        self.tokenizer = tokenizer if tokenizer else get_default_tokenizer(model_name)
+        
     def _find_headers(self, text: str):
         return [
             {"start": m.start(), "level": len(m.group(1)), "header": m.group(2).strip()}
@@ -50,7 +52,8 @@ class ChunkingEmbedder:
                     overlap = text_tokens[:self.overlap_tokens]
                     try:
                         import tiktoken
-                        overlap_text = tiktoken.encoding_for_model("text-embedding-3-small").decode(overlap)
+                        enc = tiktoken.encoding_for_model(self.model_name)
+                        overlap_text = enc.decode(overlap)
                         prev_chunk.chunk_text += " " + overlap_text
                     except Exception:
                         pass
