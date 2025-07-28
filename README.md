@@ -33,3 +33,17 @@ Provider	Description	Model Example	Notes
 openai	Uses OpenAI’s API for embeddings.	text-embedding-3-small	Requires API key.
 huggingface	Uses HuggingFace Transformers locally.	sentence-transformers/all-MiniLM-L6-v2	Requires local model files.
 ollama	(Planned) Local LLMs via Ollama.	mxbai-embed-large	Not yet supported.
+
+
+1. Sign up at [Voyage AI](https://www.voyageai.com/) and get your API key.
+2. Set your API key in your environment:
+   ```
+   export VOYAGE_API_KEY=sk-...
+   ```
+3. In `config.yaml`:
+   ```yaml
+   embedding:
+     provider: voyage
+     model: voyage-context-3
+   ```
+4. Run your pipeline as usual. The first 200 million tokens are free!

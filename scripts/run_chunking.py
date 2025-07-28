@@ -7,6 +7,8 @@ from main.chunking_embedder import ChunkingEmbedder
 from embeddings.openai_embedder import openai_embed_fn
 from embeddings.huggingface_embedder import huggingface_embed_fn, hf_tokenizer
 from embeddings.ollama_embedder import ollama_embed_fn, ollama_tokenizer
+from embeddings.voyage_embedder import voyage_embed_fn, voyage_tokenizer
+
 
 def load_config(config_path):
     with open(config_path, "r") as f:
@@ -39,6 +41,9 @@ def main():
     elif provider == "huggingface":
         embed_fn = huggingface_embed_fn
         tokenizer = hf_tokenizer
+    elif provider == "voyage":
+        embed_fn = lambda texts: voyage_embed_fn(texts, model=model_name)
+        tokenizer = voyage_tokenizer
     elif provider == "ollama":
         embed_fn = ollama_embed_fn
         tokenizer = ollama_tokenizer

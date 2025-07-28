@@ -5,5 +5,5 @@ chunking:
   inject_headers: true
 
 embedding:
-  provider: openai         # openai or huggingface or ollama (not supported)
-  model: text-embedding-3-small
+  provider: voyage         # openai or huggingface or ollama (not supported)
+  model: voyage-3-large
