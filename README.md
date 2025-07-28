@@ -47,3 +47,7 @@ ollama	(Planned) Local LLMs via Ollama.	mxbai-embed-large	Not yet supported.
      model: voyage-context-3
    ```
 4. Run your pipeline as usual. The first 200 million tokens are free!
+
+
+
+python -m scripts.run_chunking --input 'input/GTM AI Email Thread.md' --config config.yaml --output results.json
