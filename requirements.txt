@@ -1,0 +1,7 @@
+python-dotenv
+tiktoken
+nltk
+openai
+transformers
+torch
+pyyaml

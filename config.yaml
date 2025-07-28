@@ -1,0 +1,10 @@
+chunking:
+  method: sentence         # line, sentence, paragraph, header, custom
+  max_tokens: 100
+  overlap_tokens: 10
+  inject_headers: true
+
+embedding:
+  provider: openai         # openai or huggingface
+  openai_model: text-embedding-3-small
+  huggingface_model: sentence-transformers/all-MiniLM-L6-v2
