@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from main.chunking_embedder import ChunkingEmbedder
 from embeddings.openai_embedder import openai_embed_fn
 from embeddings.huggingface_embedder import huggingface_embed_fn, hf_tokenizer
+from embeddings.ollama_embedder import ollama_embed_fn, ollama_tokenizer
 
 def load_config(config_path):
     with open(config_path, "r") as f:
@@ -30,14 +31,22 @@ def main():
 
     # Select embedding function and tokenizer
     provider = embed_cfg.get("provider", "openai")
+    model_name = embed_cfg.get("model")  # unified key
+
     if provider == "openai":
         embed_fn = openai_embed_fn
         tokenizer = None  # Use default tiktoken
-        model_name = embed_cfg.get("openai_model", "text-embedding-3-small")
     elif provider == "huggingface":
         embed_fn = huggingface_embed_fn
         tokenizer = hf_tokenizer
-        model_name = embed_cfg.get("huggingface_model", "sentence-transformers/all-MiniLM-L6-v2")
+    elif provider == "ollama":
+        embed_fn = ollama_embed_fn
+        tokenizer = ollama_tokenizer
+        # Optionally set env vars for ollama embedder
+        if model_name:
+            os.environ["OLLAMA_MODEL"] = model_name
+        if embed_cfg.get("host"):
+            os.environ["OLLAMA_HOST"] = embed_cfg["host"]
     else:
         raise ValueError("Unknown embedding provider")
 

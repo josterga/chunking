@@ -5,6 +5,5 @@ chunking:
   inject_headers: true
 
 embedding:
-  provider: openai         # openai or huggingface
-  openai_model: text-embedding-3-small
-  huggingface_model: sentence-transformers/all-MiniLM-L6-v2
+  provider: openai         # openai or huggingface or ollama (not supported)
+  model: text-embedding-3-small
