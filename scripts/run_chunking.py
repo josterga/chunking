@@ -14,7 +14,21 @@ def load_config(config_path):
     with open(config_path, "r") as f:
         return yaml.safe_load(f)
 
-def run_chunking(input_path, config_path, output_path=None, provider=None, model_name=None, host=None):
+def run_chunking(
+    input_path,
+    config_path,
+    output_path=None,
+    provider=None,
+    model_name=None,
+    host=None,
+    chunk_method=None,
+    max_tokens=None,
+    overlap_tokens=None,
+    inject_headers=None,
+    header_regex=None,
+    tokenizer=None,
+    custom_chunk_fn=None,
+):
     load_dotenv()
     config = load_config(config_path)
     chunk_cfg = config.get("chunking", {})
@@ -27,6 +41,16 @@ def run_chunking(input_path, config_path, output_path=None, provider=None, model
         embed_cfg["model"] = model_name
     if host:
         embed_cfg["host"] = host
+    if chunk_method is not None:
+        chunk_cfg["method"] = chunk_method
+    if max_tokens is not None:
+        chunk_cfg["max_tokens"] = max_tokens
+    if overlap_tokens is not None:
+        chunk_cfg["overlap_tokens"] = overlap_tokens
+    if inject_headers is not None:
+        chunk_cfg["inject_headers"] = inject_headers
+    if header_regex is not None:
+        chunk_cfg["header_regex"] = header_regex
 
     with open(input_path, "r", encoding="utf-8") as f:
         text = f.read()
@@ -60,7 +84,10 @@ def run_chunking(input_path, config_path, output_path=None, provider=None, model
         max_tokens=chunk_cfg.get("max_tokens", 100),
         overlap_tokens=chunk_cfg.get("overlap_tokens", 10),
         inject_headers=chunk_cfg.get("inject_headers", True),
-        tokenizer=tokenizer
+        header_regex=chunk_cfg.get("header_regex", r"^(#{1,6})\s+(.+?)\s*$"),
+        tokenizer=tokenizer,
+        custom_chunk_fn=custom_chunk_fn,
+        model_name=model_name or chunk_cfg.get("model_name", "text-embedding-3-small"),
     )
     chunks = ce.chunk(text, source_id=os.path.basename(input_path))
     results = ce.embed_chunks(chunks, embed_fn, embed_metadata={"model": model_name})
