@@ -10,6 +10,9 @@ def ollama_tokenizer(text):
 
 def ollama_embed_fn(texts):
     embeddings = []
+    # Read env vars at call time, not import time
+    OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "nomic-embed-text")
+    OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
     for text in texts:
         response = requests.post(
             f"{OLLAMA_HOST}/api/embeddings",
