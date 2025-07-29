@@ -1,4 +1,4 @@
-from main.base import ChunkMetadata
+from chunking.main.base import ChunkMetadata
 from nltk.tokenize import sent_tokenize
 
 def chunk_sentences(text, source_id, tokenizer, max_tokens, inject_headers, find_headers, get_nearest_header, overlap_fn):

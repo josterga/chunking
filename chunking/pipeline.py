@@ -1,5 +1,6 @@
+# chunking/pipeline.py
+
 import os
-import argparse
 import yaml
 from dotenv import load_dotenv
 
@@ -8,7 +9,6 @@ from chunking.embeddings.openai_embedder import openai_embed_fn
 from chunking.embeddings.huggingface_embedder import huggingface_embed_fn, hf_tokenizer
 from chunking.embeddings.ollama_embedder import ollama_embed_fn, ollama_tokenizer
 from chunking.embeddings.voyage_embedder import voyage_embed_fn, voyage_tokenizer
-
 
 def load_config(config_path):
     with open(config_path, "r") as f:
@@ -58,7 +58,6 @@ def run_chunking(
     provider = embed_cfg.get("provider", "openai")
     model_name = embed_cfg.get("model")
 
-    # --- Add this block ---
     if provider == "openai":
         embed_fn = openai_embed_fn
         tokenizer = None  # Use default tiktoken
@@ -77,7 +76,6 @@ def run_chunking(
             os.environ["OLLAMA_HOST"] = embed_cfg["host"]
     else:
         raise ValueError("Unknown embedding provider")
-    # --- End block ---
 
     ce = ChunkingEmbedder(
         chunk_method=chunk_cfg.get("method", "sentence"),
@@ -98,14 +96,3 @@ def run_chunking(
             json.dump(results, f, indent=2)
         print(f"Results saved to {output_path}")
     return results
-
-def main():
-    parser = argparse.ArgumentParser(description="Chunk and embed text files.")
-    parser.add_argument("--input", type=str, required=True, help="Path to input text/markdown file")
-    parser.add_argument("--config", type=str, default="config.yaml", help="Path to YAML config file")
-    parser.add_argument("--output", type=str, default=None, help="Optional: path to save output JSON")
-    args = parser.parse_args()
-    run_chunking(args.input, args.config, args.output)
-
-if __name__ == "__main__":
-    main()

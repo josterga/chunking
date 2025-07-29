@@ -1,5 +1,5 @@
 import os
-from scripts.run_chunking import run_chunking
+from chunking.pipeline import run_chunking  # Updated import
 
 input_path = "input/GTM AI Email Thread.md"
 config_path = "config.yaml"

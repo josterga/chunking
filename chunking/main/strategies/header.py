@@ -1,5 +1,5 @@
-from main.base import ChunkMetadata
-from main.strategies.paragraph import chunk_paragraphs
+from chunking.main.base import ChunkMetadata
+from chunking.main.strategies.paragraph import chunk_paragraphs
 
 def chunk_headers(text, source_id, tokenizer, max_tokens, inject_headers, find_headers, get_nearest_header, overlap_fn):
     headers = find_headers(text)

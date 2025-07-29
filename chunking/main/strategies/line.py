@@ -1,4 +1,4 @@
-from main.base import ChunkMetadata
+from chunking.main.base import ChunkMetadata
 
 def chunk_lines(text, source_id, tokenizer, max_tokens, inject_headers, find_headers, get_nearest_header, overlap_fn):
     lines = text.splitlines()

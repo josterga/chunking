@@ -1,11 +1,11 @@
 import re
-from main.base import ChunkMetadata
-from main.utils import get_default_tokenizer
-from main.strategies.line import chunk_lines
-from main.strategies.sentence import chunk_sentences
-from main.strategies.paragraph import chunk_paragraphs
-from main.strategies.header import chunk_headers
-from main.strategies.custom import chunk_custom
+from chunking.main.base import ChunkMetadata
+from chunking.main.utils import get_default_tokenizer
+from chunking.main.strategies.line import chunk_lines
+from chunking.main.strategies.sentence import chunk_sentences
+from chunking.main.strategies.paragraph import chunk_paragraphs
+from chunking.main.strategies.header import chunk_headers
+from chunking.main.strategies.custom import chunk_custom
 
 class ChunkingEmbedder:
     def __init__(
