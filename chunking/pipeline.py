@@ -1,5 +1,3 @@
-# chunking/pipeline.py
-
 import os
 import yaml
 from dotenv import load_dotenv
@@ -15,8 +13,8 @@ def load_config(config_path):
         return yaml.safe_load(f)
 
 def run_chunking(
-    input_path,
-    config_path,
+    input_path=None,
+    config_path=None,
     output_path=None,
     provider=None,
     model_name=None,
@@ -28,18 +26,26 @@ def run_chunking(
     header_regex=None,
     tokenizer=None,
     custom_chunk_fn=None,
+    raw_text=None,
 ):
     load_dotenv()
-    config = load_config(config_path)
-    chunk_cfg = config.get("chunking", {})
-    embed_cfg = config.get("embedding", {})
+
+    # Start with empty configs
+    chunk_cfg = {}
+    embed_cfg = {}
+
+    # Load from config file if provided
+    if config_path is not None:
+        config = load_config(config_path)
+        chunk_cfg = config.get("chunking", {})
+        embed_cfg = config.get("embedding", {})
 
     # Allow override from function arguments
-    if provider:
+    if provider is not None:
         embed_cfg["provider"] = provider
-    if model_name:
+    if model_name is not None:
         embed_cfg["model"] = model_name
-    if host:
+    if host is not None:
         embed_cfg["host"] = host
     if chunk_method is not None:
         chunk_cfg["method"] = chunk_method
@@ -52,8 +58,14 @@ def run_chunking(
     if header_regex is not None:
         chunk_cfg["header_regex"] = header_regex
 
-    with open(input_path, "r", encoding="utf-8") as f:
-        text = f.read()
+    # Read input
+    if input_path is not None:
+        with open(input_path, "r", encoding="utf-8") as f:
+            text = f.read()
+    elif raw_text is not None:
+        text = raw_text
+    else:
+        raise ValueError("Must provide either input_path or raw_text")
 
     provider = embed_cfg.get("provider", "openai")
     model_name = embed_cfg.get("model")
@@ -87,7 +99,7 @@ def run_chunking(
         custom_chunk_fn=custom_chunk_fn,
         model_name=model_name or chunk_cfg.get("model_name", "text-embedding-3-small"),
     )
-    chunks = ce.chunk(text, source_id=os.path.basename(input_path))
+    chunks = ce.chunk(text, source_id=os.path.basename(input_path) if input_path else "raw_text")
     results = ce.embed_chunks(chunks, embed_fn, embed_metadata={"model": model_name})
 
     if output_path:
