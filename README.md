@@ -24,7 +24,7 @@
   ```python
   from chunking.pipeline import run_chunking
   results = run_chunking(
-      input_path="input/GTM AI Email Thread.md",
+      input_path="input/input.md",
       config_path="config.yaml",
       provider="ollama",
       model_name="mxbai-embed-large:latest",
