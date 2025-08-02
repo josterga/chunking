@@ -1,7 +1,7 @@
 import os
 from chunking.pipeline import run_chunking  # Updated import
 
-input_path = "input/GTM AI Email Thread.md"
+input_path = "input.md"
 config_path = "config.yaml"
 
 providers = [

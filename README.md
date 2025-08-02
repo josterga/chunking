@@ -1,40 +1,33 @@
-chunking
+# `chunking` — Flexible Text Chunking & Embedding
 
-A flexible, config-driven Python library for text chunking and embedding strategies.
-Designed for use in RAG (Retrieval-Augmented Generation) and other NLP pipelines.
-Features
-Multiple chunking strategies: sentence, paragraph, line, header, and custom.
-Pluggable embedding providers: OpenAI, HuggingFace, Ollama, Voyage, and more.
-Configurable via YAML and .env files.
-Easy integration: Use as a library in your own projects or as a CLI tool.
-Extensible and tested.
+- **Description:**  
+  Config-driven library for splitting text into chunks and embedding them using various providers (OpenAI, HuggingFace, Ollama, Voyage, etc).
+- **Entrypoint:**  
+  `from chunking.pipeline import run_chunking`
+- **Configurable Arguments:**
+  - `input_path`: Path to input text file.
+  - `config_path`: YAML config file for chunking/embedding.
+  - `output_path`: Where to save results (optional).
+  - `provider`: Embedding provider (`openai`, `huggingface`, `ollama`, `voyage`).
+  - `model_name`: Model to use for embedding.
+  - `host`: Custom host for embedding API.
+  - `chunk_method`: Chunking strategy (`sentence`, `paragraph`, `line`, `header`, or custom).
+  - `max_tokens`: Max tokens per chunk.
+  - `overlap_tokens`: Overlap between chunks.
+  - `inject_headers`: Whether to inject headers into chunks.
+  - `header_regex`: Regex for header detection.
+  - `tokenizer`: Custom tokenizer (optional).
+  - `custom_chunk_fn`: Custom chunking function (optional).
+  - `raw_text`: Provide text directly instead of file.
 
-
-Usage
-
-- as a library
-from chunking.pipeline import run_chunking
-
-results = run_chunking(
-    input_path="input/GTM AI Email Thread.md",
-    config_path="config.yaml",
-    provider="ollama",
-    model_name="mxbai-embed-large:latest",
-    host="http://localhost:11434"
-)
-for chunk in results:
-    print(chunk["text"], chunk["embedding"])
-
-
-Configuration
-YAML config: Controls chunking and embedding parameters.
-.env file: For secrets and API keys (e.g., OpenAI, Ollama).
-
-Extending
-Add new chunking strategies:
-Implement in chunking/main/strategies/ and register in ChunkingEmbedder.
-Add new embedding providers:
-Implement in chunking/embeddings/ and update the provider logic in pipeline.py.
-
-Testing
-Tests are in the tests/ directory.
+- **Example:**
+  ```python
+  from chunking.pipeline import run_chunking
+  results = run_chunking(
+      input_path="input/GTM AI Email Thread.md",
+      config_path="config.yaml",
+      provider="ollama",
+      model_name="mxbai-embed-large:latest",
+      host="http://localhost:11434"
+  )
+  ```
