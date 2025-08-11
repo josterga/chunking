@@ -1,7 +1,7 @@
 chunking:
-  method: sentence         # line, sentence, paragraph, header, custom
-  max_tokens: 100
-  overlap_tokens: 10
+  method: paragraph         # line, sentence, paragraph, header, custom
+  max_tokens: 300
+  overlap_tokens: 40
   inject_headers: true
 
 embedding:

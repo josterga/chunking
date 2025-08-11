@@ -10,13 +10,13 @@ from chunking.main.strategies.custom import chunk_custom
 class ChunkingEmbedder:
     def __init__(
         self,
-        chunk_method: str = "sentence",
+        chunk_method: str = "paragraph",
         max_tokens: int = 130,
         overlap_tokens: int = 20,
         inject_headers: bool = True,
         header_regex: str = r"^(#{1,6})\s+(.+?)\s*$",
         tokenizer=None,
-        model_name: str = "text-embedding-3-small",
+        model_name: str = "nomic-embed-text",
         custom_chunk_fn=None,
     ):
         self.chunk_method = chunk_method
